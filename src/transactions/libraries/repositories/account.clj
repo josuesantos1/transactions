@@ -54,9 +54,18 @@
   [{:keys [id balance]}]
   (let [tx-id (create-id 20)]
     [[:db/add tx-id :account/id id]
-     [:db/add tx-id :account/balance balance]]))
+     [:db/add tx-id :account/balance balance]])) 
 
 #_(d/transact db/conn (update-balance {:id #uuid "5727bdd1-1c86-4f87-acd2-3db2873b3e99" :balance 1000N}))
+
+(defn view-user
+  [email conn]
+  (d/q '[:find (pull ?e [*])
+         :in $ ?email
+         :where
+         [?e :account/email ?email]] (d/db conn) email))
+
+#_(view-user "josue.santos@email.com" db/conn)
 
 #_(d/q '[:find (pull ?e [*])
        :where
