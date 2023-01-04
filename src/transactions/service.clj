@@ -3,7 +3,8 @@
             [transactions.routes :as routes]
             
             [transactions.libraries.database :as db]
-            [transactions.libraries.schema.transaction :as schema-tran]))
+            [transactions.libraries.schema.transaction :as schema-tran]
+            [transactions.libraries.schema.account :as schema.account]))
 
 (def service {:env :prod
               ::http/routes routes/routes
@@ -17,12 +18,12 @@
 
 (defn create-schema
   []
-  (-> schema-tran/schema
-      (db/create-schema)))
+  (db/create-schema schema-tran/schema)
+  (db/create-schema schema.account/schema))
 
 (defn startup-app
   []
   (db/create-db)
   (create-schema))
 
-(startup-app)
+#_(startup-app)
