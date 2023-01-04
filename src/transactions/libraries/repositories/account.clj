@@ -67,6 +67,15 @@
 
 #_(view-user "josue.santos@email.com" db/conn)
 
+(defn get-balance
+  [email conn]
+  (d/q '[:find (pull ?e [:account/balance])
+         :in $ ?email
+         :where
+         [?e :account/email ?email]] (d/db conn) email))
+
+#_(get-balance "josue.santos@email.com" db/conn)
+
 #_(d/q '[:find (pull ?e [*])
        :where
        [?e :account/name "josue"]] (d/db db/conn))
