@@ -1,4 +1,5 @@
-(ns transactions.libraries.repositories.transaction)
+(ns transactions.libraries.repositories.transaction
+  (:require [datomic.api :as d]))
 
 (defn create-id
   ([n]
@@ -21,4 +22,10 @@
 
 #_(new-transaction {:uuid "12345" :sender "123456" :receiver "234513" :value 100000N})
 
-
+(defn view-all-transaction-by-user
+  [user conn]
+  (d/q '[:find (pull ?e [*])
+         :in $ ?user
+         :where
+         (or [?e :transaction/sender ?user]
+             [?e :transaction/receiver ?user])] (d/db conn) user))
