@@ -12,7 +12,6 @@
 
 (defn new-transaction 
   [{:keys [sender receiver value]}]
-  (println sender receiver value)
   (let [id (create-id 20)]
     [[:db/add id :transaction/id (java.util.UUID/randomUUID)]
      [:db/add id :transaction/sender sender]
@@ -37,3 +36,10 @@
          :in $ ?id
          :where
          [?e :transaction/sender ?id]] (d/db conn) id))
+
+(defn revert-transaction
+  [id conn]
+  (let [tx-id (create-id 20)]
+    (d/transact conn [[:db/add tx-id :transaction/id id]
+                      [:db/add tx-id :transaction/instant (java.util.Date.)]
+                      [:db/add tx-id :transaction/status :status/reversed]])))
