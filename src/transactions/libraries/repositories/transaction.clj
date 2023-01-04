@@ -29,3 +29,10 @@
          :where
          (or [?e :transaction/sender ?user]
              [?e :transaction/receiver ?user])] (d/db conn) user))
+
+(defn view-transaction-by-id
+  [id conn]
+  (d/q '[:find (pull ?e [*])
+         :in $ ?id
+         :where
+         [?e :transaction/sender ?id]] (d/db conn) id))
