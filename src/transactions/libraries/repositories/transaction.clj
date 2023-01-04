@@ -18,7 +18,8 @@
      [:db/add id :transaction/sender sender]
      [:db/add id :transaction/receiver receiver]
      [:db/add id :transaction/value value]
-     [:db/add id :transaction/status :status/sent]]))
+     [:db/add id :transaction/status :status/sent]
+     [:db/add id :transaction/instant (java.util.Date.)]]))
 
 #_(new-transaction {:uuid "12345" :sender "123456" :receiver "234513" :value 100000N})
 
